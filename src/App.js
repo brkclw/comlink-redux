@@ -1,21 +1,41 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import store from './store';
 
 import CourseList from './components/CourseList';
 import Board from './components/Board';
+import configureStore from './store';
+
+
+const store = configureStore()
 
 function App() {
   const [show, setShow] = React.useState(true);
+
   return (
     <Provider store={store}>
-      <CourseList />
+
+      
+      <div style={{backgroundColor:"#eee"}}>
+        lista kursów
+        <CourseList />
+      </div>
+
+
+      <div style={{backgroundColor:"aquamarine"}}>
+      {show && <Board />}
+      </div>
+
+
       <button onClick={() => setShow((state) => {
         debugger;
         return !state;
       })}>close board</button>
-      {show && <Board />}
+
+      <div>
+
+      </div>
+
     </Provider>
   );
 }

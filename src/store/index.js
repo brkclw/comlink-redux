@@ -1,22 +1,14 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
+import RootReducer from './reducers'
 
-const INITIAL_STATE = {
-  data: [
-    'React Native',
-    'ReactJS',
-    'NodeJS'
-  ],
-};
+const loggerMiddleware = createLogger()
 
-function courses(state = INITIAL_STATE, action) {
-  switch (action.type) {
-    case 'ADD_COURSE':
-      return { ...state, data: [...state.data, action.title] };
-    default:
-      return state;
-  }
+export default function configureStore(preloadedState) {
+  return createStore(
+    RootReducer,
+    preloadedState,
+    applyMiddleware(thunkMiddleware, loggerMiddleware)
+  )
 }
-
-const store = createStore(courses);
-
-export default store;

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { wrap, releaseProxy } from "comlink";
+import { useSelector } from 'react-redux';
 
 
 const Board = () => {
+    const courses = useSelector(state => state.courses.data);
     // const worker = new WebWorker(myWorker);
     const worker = new Worker("./Worker/index.js", {
         name: "my-first-worker",
@@ -12,23 +13,29 @@ const Board = () => {
     const workerApi = wrap(worker);
 
     useEffect(() => {
+        // workerApi[releaseProxy]();
 
         return () => {
             // on component destroy
+            // workerApi[releaseProxy]();
+
+            debugger;
         }
-    }, [workerApi])
+    }, [])
 
     const handleOnClick = () => {
-        workerApi.takeALongTimeToDoSomething();
+        workerApi.takeALongTimeToDoSomething().then((res) => {
+            debugger;
+        });
         // workerApi[releaseProxy]();
     }
 
-    const courses = useSelector(state => state.data);
 
     return (
         <>
             this is from board
             <button onClick={handleOnClick}>add to redux smthg</button>
+
             {courses.map((course) => <p>board - {course}</p>)}
         </>
     )
